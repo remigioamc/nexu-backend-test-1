@@ -3,4 +3,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  resources :brands, only: [:index, :create]
+  resources :models, only: [:index, :update]
+
+  get '/brands/:id/models', to: 'models#show'
+  post '/brands/:id/models', to: 'models#create'
+
 end
