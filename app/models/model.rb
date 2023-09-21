@@ -6,22 +6,11 @@ class Model < ApplicationRecord
 
   after_save :updates_brand_average_price
 
+  scope :price_between, lambda{ |min = 0, max = Float::INFINITY| where(monthly_payment: min..max)}
+
   private
 
   def updates_brand_average_price
-    brand = Brand.find(self.brand_id)
-    models = brand.models
-    brand.average_price = models_average_price(models)
-    brand.save!
-  end
-
-  def models_average_price(models)
-    total_models_average_price = 0
-
-    models.each do |model|
-      total_models_average_price += model.average_price
-    end
-
-    total_models_average_price / models.size
+    brand.update_average_price
   end
 end

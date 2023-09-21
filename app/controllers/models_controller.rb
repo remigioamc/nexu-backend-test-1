@@ -1,19 +1,9 @@
 class ModelsController < ApplicationController
   def index
-    greater = params[:greater] if params[:greater]
-    lower = params[:lower] if params[:lower]
-    models = nil
-
-    if greater && lower
-      models_greater_lower = Model.where("average_price > ? AND average_price < ?", greater, lower)
-      models = models_greater_lower
-    elsif greater
-      models_greater = Model.where("average_price > ?", greater) if greater
-      models = models_greater
-    else
-      models_lower = Model.where("average_price < ?", lower) if lower
-      models = models_lower
-    end
+    greater = params[:greater]
+    lower = params[:lower]
+    models = Model.price_between(lower,greater)
+    
     render json: models
   end
 
